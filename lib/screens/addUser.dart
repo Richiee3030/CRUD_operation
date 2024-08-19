@@ -17,9 +17,8 @@ class _AddUserState extends State<AddUser> {
   bool _validateName = false;
   bool _validateContact = false;
   bool _validateDescription = false;
-  var _userService = UserService();
+  final _userService = UserService();
   late List<User> _userList = <User>[];
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +41,7 @@ class _AddUserState extends State<AddUser> {
               ),
               TextField(
                   controller: _userNameController,
+                  textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: 'Enter Name',
@@ -53,6 +53,8 @@ class _AddUserState extends State<AddUser> {
               ),
               TextField(
                   controller: _userContactController,
+                  keyboardType: TextInputType.number,
+                  maxLength: 10,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: 'Enter Contact',
@@ -64,6 +66,8 @@ class _AddUserState extends State<AddUser> {
               ),
               TextField(
                   controller: _userDescriptionController,
+                  textCapitalization: TextCapitalization.words,
+                  maxLength: 200,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: 'Enter Description',
@@ -84,17 +88,15 @@ class _AddUserState extends State<AddUser> {
                           _userDescriptionController.text.isEmpty ? _validateDescription = true : _validateDescription = false;
                         });
                         if (_validateName == false && _validateContact == false && _validateDescription == false) {
-                          // print("Good Data Can Save");
                           _userList = <User>[];
-                          var _user = User();
-                          _user.name = _userNameController.text;
-                          _user.contact = _userContactController.text;
-                          _user.description = _userDescriptionController.text;
-                          var result = await _userService.SaveUser(_user);
-                          _userList.add(_user);
+                          var user = User();
+                          user.name = _userNameController.text;
+                          user.contact = _userContactController.text;
+                          user.description = _userDescriptionController.text;
+                          var result = await _userService.SaveUser(user);
+                          _userList.add(user);
                           Navigator.pop(context, result);
                         }
-
                       },
                       child: const Text(
                         'Save Details',

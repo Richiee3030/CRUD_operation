@@ -58,13 +58,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     getAllUserDetails();
     super.initState();
-
   }
 
   _showSuccessSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message,style: const TextStyle(color: Colors.white)),
+        content: Text(message, style: const TextStyle(color: Colors.white)),
       ),
     );
   }
@@ -80,28 +79,23 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             actions: [
               TextButton(
-                  style: TextButton.styleFrom(
-                      backgroundColor: Colors.red),
-                  onPressed: ()  {
-                    var result= _userService.deleteUser(userId);
+                  style: TextButton.styleFrom(backgroundColor: Colors.red),
+                  onPressed: () {
+                    var result = _userService.deleteUser(userId);
 
                     if (result != null) {
                       Navigator.pop(context);
                       // getAllUserDetails();
-                      _showSuccessSnackBar(
-                          'User Detail Deleted Success' );
+                      _showSuccessSnackBar('User Detail Deleted Success');
                     }
                   },
                   child: const Text('Delete', style: TextStyle(color: Colors.white))),
               TextButton(
-                  style: TextButton.styleFrom(
-                      backgroundColor: Colors.teal),
+                  style: TextButton.styleFrom(backgroundColor: Colors.teal),
                   onPressed: () {
                     Navigator.pop(context);
-
-
                   },
-                  child: const Text('Close',style: TextStyle(color: Colors.white)))
+                  child: const Text('Close', style: TextStyle(color: Colors.white)))
             ],
           );
         });
@@ -115,72 +109,74 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: FutureBuilder(
         future: getAllUserDetails(),
-        builder: (context,state) {
+        builder: (context, state) {
           return RefreshIndicator(
-
             onRefresh: () {
-               return getAllUserDetails();
+              return getAllUserDetails();
             },
-            child: ListView.builder(
-                itemCount: _userList.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ViewUser(
-                                  user: _userList[index],
-                                )));
-                      },
-                      leading: const Icon(Icons.person),
-                      title: Text(_userList[index].name ?? ''),
-                      subtitle: Text(_userList[index].contact ?? ''),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => EditUser(
-                                          user: _userList[index],
-                                        ))).then((data) {
-                                  if (data != null) {
-                                    // getAllUserDetails();
-                                    _showSuccessSnackBar(
-                                        'User Detail Updated Success');
-                                  }
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.teal,
-                              )),
-                          IconButton(
-                              onPressed: () {
-                                _deleteFormDialog(context, _userList[index].id);
-                              },
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                              ))
-                        ],
-                      ),
+            child: ListView.separated(
+              padding: const EdgeInsets.all(20),
+              itemCount: _userList.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewUser(
+                                    user: _userList[index],
+                                  )));
+                    },
+                    leading: const Icon(Icons.person),
+                    title: Text(_userList[index].name ?? ''),
+                    subtitle: Text(_userList[index].contact ?? ''),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditUser(
+                                            user: _userList[index],
+                                          ))).then((data) {
+                                if (data != null) {
+                                  // getAllUserDetails();
+                                  _showSuccessSnackBar('User Detail Updated Success');
+                                }
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.teal,
+                            )),
+                        IconButton(
+                            onPressed: () {
+                              _deleteFormDialog(context, _userList[index].id);
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ))
+                      ],
                     ),
-                  );
-                }),
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(
+                  height: 10,
+                );
+              },
+            ),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()  {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AddUser()))
-              .then((data) {
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const AddUser())).then((data) {
             if (data != null) {
               getAllUserDetails();
               _showSuccessSnackBar('User Detail Added Success');
