@@ -58,7 +58,7 @@ class _ViewUserState extends State<ViewUser> {
                           fontWeight: FontWeight.w600)),
                   Padding(
                     padding: const EdgeInsets.only(left: 25),
-                    child: Text(widget.user.contact ?? '', style: TextStyle(fontSize: 16)),
+                    child: Text(widget.user.contact ?? '', style: const TextStyle(fontSize: 16)),
                   ),
                 ],
               ),

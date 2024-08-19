@@ -5,20 +5,20 @@ import '../model/user.dart';
 import '../services/userService.dart';
 class EditUser extends StatefulWidget {
   final User user;
-  const EditUser({Key? key,required this.user}) : super(key: key);
+  const EditUser({super.key,required this.user});
 
   @override
   State<EditUser> createState() => _EditUserState();
 }
 
 class _EditUserState extends State<EditUser> {
-  var _userNameController = TextEditingController();
-  var _userContactController = TextEditingController();
-  var _userDescriptionController = TextEditingController();
+  final _userNameController = TextEditingController();
+  final _userContactController = TextEditingController();
+  final _userDescriptionController = TextEditingController();
   bool _validateName = false;
   bool _validateContact = false;
   bool _validateDescription = false;
-  var _userService=UserService();
+  final _userService=UserService();
 
   @override
   void initState() {
@@ -112,12 +112,12 @@ class _EditUserState extends State<EditUser> {
                             _validateContact == false &&
                             _validateDescription == false) {
                           // print("Good Data Can Save");
-                          var _user = User();
-                          _user.id=widget.user.id;
-                          _user.name = _userNameController.text;
-                          _user.contact = _userContactController.text;
-                          _user.description = _userDescriptionController.text;
-                          var result=await _userService.UpdateUser(_user);
+                          var user = User();
+                          user.id=widget.user.id;
+                          user.name = _userNameController.text;
+                          user.contact = _userContactController.text;
+                          user.description = _userDescriptionController.text;
+                          var result=await _userService.updateUser(user);
                           Navigator.pop(context,result);
                         }
                       },
